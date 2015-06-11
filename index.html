@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src="//cdn.rawgit.com/jonleung/eca61ac841c1b1ad3603/raw/801220e8635410ed5b0a9a788a0595256cfde72e/twilio.js"></script>
+    <style>
+        #logs {
+            margin-top: 200px;
+        }
+    </style>
+</head>
+<body>
+    <iframe width="500" height="315" src="https://www.youtube.com/embed/2HQaBWziYvY" frameborder="0" allowfullscreen></iframe>
+    
+    <input type="text" id="username" placeholder="Write username here...">
+    <input type="text" id="comment" placeholder="Write comment here...">
+    <input type="button" id="Like?">
+    <input type="submit" id="submit">
+    
+    <div id="comments" element=li>
+    
+    </div>
+    
+    <script src="comment_messages.js"></script>
+    <script>
+        var $;
+        var myDataRef = new Firebase('https://gll0ee9va0y.firebaseio-demo.com/');
+        $('#messageInput').keypress(function (e) {
+        if (e.keyCode == 13) {
+          var name = $('#nameInput').val();
+          var text = $('#messageInput').val();
+          myDataRef.push({name: name, text: text});
+          $('#messageInput').val('');
+        }
+    });
+    myDataRef.on('child_added', function(snapshot) {
+        var message = snapshot.val();
+        displayChatMessage(message.name, message.text);
+    });
+    function displayChatMessage(name, text) {
+        $('<div/>').text(text).prepend($('<em/>').text(name+':')).appendTo($('#messagesDiv'));
+        $('#messagesDiv')[0].scrollTop = $('messagesDiv')[0].scrollHeight;
+    }
+    </script>
+</body>
+</html>
